@@ -4,45 +4,9 @@ import { PrayerCard } from "@/components/PrayerCard";
 import { LivestreamPlayer } from "@/components/LivestreamPlayer";
 import { IslamicHeader } from "@/components/IslamicHeader";
 import { useWidgetSync } from "@/hooks/useWidgetSync";
-import { Clock, Video } from "lucide-react";
-
-const prayerTimes = [
-  {
-    name: "Fajr",
-    time: "5:45 AM",
-    status: "past" as const,
-    arabic: "الفجر",
-    description: "Dawn prayer before sunrise"
-  },
-  {
-    name: "Dhuhr", 
-    time: "12:30 PM",
-    status: "past" as const,
-    arabic: "الظهر",
-    description: "Midday prayer when sun reaches zenith"
-  },
-  {
-    name: "Asr",
-    time: "3:45 PM", 
-    status: "current" as const,
-    arabic: "العصر",
-    description: "Afternoon prayer before sunset"
-  },
-  {
-    name: "Maghrib",
-    time: "6:20 PM",
-    status: "upcoming" as const,
-    arabic: "المغرب", 
-    description: "Sunset prayer just after sunset"
-  },
-  {
-    name: "Isha",
-    time: "8:00 PM",
-    status: "upcoming" as const,
-    arabic: "العشاء",
-    description: "Night prayer after twilight"
-  }
-];
+import { usePrayerTimes } from "@/hooks/usePrayerTimes";
+import { Clock, Video, RefreshCw } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const Index = () => {
   const [currentTime] = useState(new Date().toLocaleTimeString('en-US', {
@@ -50,6 +14,8 @@ const Index = () => {
     minute: '2-digit',
     hour12: true
   }));
+
+  const { prayerTimes, isLoading, lastUpdated, refetch } = usePrayerTimes();
 
   // Sync prayer data with widgets and shortcuts
   useWidgetSync(prayerTimes);
@@ -90,10 +56,26 @@ const Index = () => {
               ))}
             </div>
             
-            <div className="mt-8 text-center">
-              <p className="text-sm text-muted-foreground">
-                Prayer times for Toronto, Canada • Times may vary slightly
-              </p>
+            <div className="mt-8 text-center space-y-2">
+              <div className="flex items-center justify-center gap-2">
+                <p className="text-sm text-muted-foreground">
+                  Prayer times for Toronto, Canada • Times may vary slightly
+                </p>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={refetch}
+                  disabled={isLoading}
+                  className="h-6 w-6 p-0"
+                >
+                  <RefreshCw className={`h-3 w-3 ${isLoading ? 'animate-spin' : ''}`} />
+                </Button>
+              </div>
+              {lastUpdated && (
+                <p className="text-xs text-muted-foreground">
+                  Last updated: {lastUpdated.toLocaleTimeString()}
+                </p>
+              )}
             </div>
           </TabsContent>
 

@@ -5,6 +5,7 @@ export interface PrayerData {
   time: string;
   status: 'past' | 'current' | 'upcoming';
   arabic: string;
+  timestamp?: Date;
 }
 
 export class WidgetService {
