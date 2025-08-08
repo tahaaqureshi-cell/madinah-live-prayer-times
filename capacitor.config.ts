@@ -18,6 +18,10 @@ const config: CapacitorConfig = {
       showSpinner: false,
       splashFullScreen: true,
       splashImmersive: true
+    },
+    Shortcuts: {
+      // Enable dynamic shortcuts
+      enableDynamicShortcuts: true
     }
   }
 };

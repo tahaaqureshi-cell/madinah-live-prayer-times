@@ -3,6 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PrayerCard } from "@/components/PrayerCard";
 import { LivestreamPlayer } from "@/components/LivestreamPlayer";
 import { IslamicHeader } from "@/components/IslamicHeader";
+import { useWidgetSync } from "@/hooks/useWidgetSync";
 import { Clock, Video } from "lucide-react";
 
 const prayerTimes = [
@@ -49,6 +50,9 @@ const Index = () => {
     minute: '2-digit',
     hour12: true
   }));
+
+  // Sync prayer data with widgets and shortcuts
+  useWidgetSync(prayerTimes);
 
   return (
     <div className="min-h-screen bg-background">
